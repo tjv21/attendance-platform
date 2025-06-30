@@ -1,0 +1,158 @@
+<?php
+session_start();
+if (!isset($_SESSION['admin'])) {
+    header("Location: admin_login.html");
+    exit();
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #2c5364);
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    header { margin-bottom: 40px; }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 10px #00000080;
+      letter-spacing: 1px;
+    }
+    p#time {
+      font-size: 1.1rem;
+      margin: 0;
+      opacity: 0.85;
+    }
+    .panel-container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 50px 30px;
+      border-radius: 25px;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+    }
+    .btn {
+      display: inline-block;
+      margin: 15px;
+      padding: 18px 30px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: #fff;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      min-width: 220px;
+      box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #5f0ca8, #1c4fdd);
+      transform: scale(1.08);
+      box-shadow: 0 12px 30px rgba(106, 17, 203, 0.6);
+    }
+    .dark-mode {
+      background: #0d1117;
+      color: #eee;
+    }
+    .dark-mode .panel-container {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #222;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .toggle-btn:hover {
+      background-color: #444;
+    }
+    canvas {
+      max-width: 600px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="toggleDarkMode()" class="toggle-btn">Toggle Dark Mode</button>
+  <header>
+    <h1>Welcome, <?php echo $_SESSION['admin']; ?> 👋</h1>
+    <p>Manage students, attendance, and system settings here.</p>
+    <p id="time"></p>
+  </header>
+  <div class="panel-container">
+    <a href="attendance_project/view_attendance.php" class="btn">📋 View Attendance</a>
+    <a href="attendance_project/insert_attendance.html" class="btn">📝 Fill Attendance</a>
+    <a href="#" class="btn" onclick="showToast('Adding Student')">➕ Add Student</a>
+    <a href="#" class="btn" onclick="showToast('Opening Settings')">⚙️ Settings</a>
+    <a href="logout.php" class="btn">🚪 Logout</a>
+    <canvas id="attendanceChart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+    function updateTime() {
+      const now = new Date();
+      document.getElementById("time").innerText = now.toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    function showToast(message) {
+      Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: "#6a11cb",
+        stopOnFocus: true,
+      }).showToast();
+    }
+
+    const ctx = document.getElementById('attendanceChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        datasets: [{
+          label: 'Attendance Count',
+          data: [12, 19, 3, 5, 9],
+          backgroundColor: '#2575fc'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#fff' } }
+        },
+        scales: {
+          x: { ticks: { color: '#fff' } },
+          y: { ticks: { color: '#fff' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+    
