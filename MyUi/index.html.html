@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rajeswari Attendance Platform</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video autoplay muted loop id="bgVideo">
+    <source src="bg.mp4" type="video/mp4" />  
+  </video>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- Main Content -->
+  <header>
+    <h1>Rajeswari Inter College Attendance Platform</h1>
+    <nav>
+      <a href="Admin-login.html" class="btn">Login as Admin</a>
+      <a href="Student-login.html" class="btn">Login as Student</a>
+      <button onclick="toggleDarkMode()" class="btn">Toggle Dark Mode</button>
+    </nav>
+  </header>
+
+  <!-- Login Section -->
+  <div class="login-container glass-effect">
+    <h2>Login</h2>
+    <h3 class="typing-text"></h3>
+    <p id="datetime"></p>
+
+    <form action="#" method="POST">
+      <label for="usertype">I am:</label>
+      <select id="usertype" name="usertype" required>
+        <option value="">-- Select --</option>
+        <option value="admin">Admin</option>
+        <option value="student">Student</option>
+      </select>
+
+      <label for="username">Username / Email:</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit" class="btn full-width">Login</button>
+    </form>
+  </div>
+
+  <!-- Welcome Card -->
+  <div class="glass-card">
+    <h2>Welcome Admin</h2>
+    <p>You can manage student attendance here.</p>
+  </div>  
+
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="logo.jpg" alt="College Logo" class="logo" />
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    const text = "Welcome to Rajeswari Attendance Platform...";
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.querySelector(".typing-text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+    typeWriter();
+
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('datetime').innerText = now.toLocaleString();
+    }, 1000);
+  </script>
+
+  <!-- Particle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        size: { value: 3 },
+        color: { value: "#ffffff" },
+        line_linked: { enable: true, color: "#ffffff" },
+        move: { speed: 2 }
+      }
+    });
+  </script>
+</body>
+</html>
